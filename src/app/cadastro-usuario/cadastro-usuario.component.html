@@ -1,13 +1,20 @@
-<po-page-default p-title="Perguntas" [p-actions]="actions">
-    <form [formGroup]="formulario">
-        
-        <!-- FORMULÁRIO BARRA -->
+<po-page-default p-title="Perguntas">
 
-        <label formArrayName="perguntas" *ngFor="let item of getPerguntasControls(); let i = index"> {{perguntas[i]}}
-            <po-checkbox-group name="checkboxGroup" [p-options]="options" [formControlName]="i">
-            </po-checkbox-group>
-        </label>
+    <po-button (p-click)="form.getObjeto()" p-label="Modelo"></po-button>
 
-
+    <form [formGroup]="form.formGroup">
+        <po-button (p-click)="incluirAgrupador(form)" p-label="Incluir Agrupador"></po-button>
+        <div formArrayName="agrupadores" *ngFor= "let agrupador of form.agrupadores; let indiceAgrupador = index">
+            <po-button (p-click)="incluirPergunta(agrupador)" p-label="Incluir Pergunta"></po-button>
+            Agrupador - {{ indiceAgrupador }}
+            <div class="po-mt-2" [formGroupName]="indiceAgrupador">
+                <div formArrayName="perguntas" *ngFor = "let pergunta of agrupador.perguntas; let indicePergunta = index">
+                    Pergunta - {{ indicePergunta }}
+                    <div [formGroupName]="indicePergunta">
+                        <po-radio-group formControlName="resposta" [p-options]="options"></po-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </po-page-default>
